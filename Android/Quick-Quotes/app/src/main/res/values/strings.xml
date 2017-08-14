@@ -1,3 +1,5 @@
-<resources>
-    <string name="app_name">Quick Qotes</string>
+<resources xmlns:android="http://schemas.android.com/tools">
+    <string name="app_name">Quick Quotes</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">KtklAWZwskhEHYIFIreYWJNfq</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">ifY2kY8Mn5EspGAxhLQQZDi652RHxjeqCqHV92373SFW2HAbDz</string>
 </resources>

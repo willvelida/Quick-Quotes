@@ -1,17 +1,26 @@
 package com.willvelida.quickqotes;
 
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.twitter.sdk.android.core.*;
+import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,20 +34,27 @@ public class MainActivity extends AppCompatActivity {
     TextView quoteTextView;
     TextView authorTextView;
     Button getQuoteButton;
+    Button tweetComposer;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        Twitter.initialize(this);
 
         // Initialize UI Variables on creation of app
         quoteTextView = (TextView) findViewById(R.id.quoteTextView);
         authorTextView = (TextView) findViewById(R.id.authorTextView);
         getQuoteButton = (Button) findViewById(R.id.generateQuoteButton);
+        tweetComposer = (Button) findViewById(R.id.tweet_composer);
+
+        tweetComposer.setEnabled(false);
     }
 
     // Generate Quote from Button
     public void generateQuote(View view) {
+        tweetComposer.setEnabled(true);
         try {
             DownloadTask task = new DownloadTask();
             task.execute("https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=json&lang=en");
@@ -49,6 +65,18 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    // Tweet the quote to twitter
+    public void composeTweet(View view) {
+        try {
+            new TweetComposer.Builder(MainActivity.this)
+                    .text(quoteTextView.getText() + "by " + authorTextView.getText())
+                    .show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Sorry! We can tweet this right now!", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 
     // Download task to establish connection with Forismatic API
@@ -105,17 +133,17 @@ public class MainActivity extends AppCompatActivity {
                 quote = jsonObject.getString("quoteText");
                 author = jsonObject.getString("quoteAuthor");
 
-                // If the quote and author are found
-                if (quote != "" & author != "") {
-                    // set the values to the text view
-                    quoteTextView.setText(quote);
-                    authorTextView.setText(author);
-                    // Unless if the author is unknown
-                } else if (quote != "" & author == "") {
+                // Unless if the author is unknown
+                if (quote != "" & author == " ") {
                     // set the quote to the quote view
                     quoteTextView.setText(quote);
                     // set the author to the String value "Unknown"
-                    authorTextView.setText("Unknown author");
+                    authorTextView.setText("Unknown");
+                    // If the quote and author are found
+                } else if (quote != "" & author != "") {
+                    // set the values to the text view
+                    quoteTextView.setText(quote);
+                    authorTextView.setText("- " + author);
                 }
 
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/image1"
     tools:context="com.willvelida.quickqotes.MainActivity">
 
     <TextView
@@ -16,10 +17,9 @@
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:padding="10dp"
-        android:text="Quote In here"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="28sp" />
+        android:textColor="@android:color/background_light"
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/authorTextView"
@@ -30,18 +30,35 @@
         android:layout_margin="10dp"
         android:layout_marginTop="35dp"
         android:padding="10dp"
-        android:text="Author here"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:textColor="@android:color/background_light"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/generateQuoteButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
         android:onClick="generateQuote"
-        android:text="Generate New Quote"
+
+        android:padding="10dp"
+        android:text="New Quote"
+        android:textColor="@color/tw__composer_white"
+        android:layout_above="@+id/tweet_composer"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/tweet_composer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tw__composer_blue"
+        android:onClick="composeTweet"
+        android:text="Tweet"
+        android:textColor="@color/tw__solid_white"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
 </RelativeLayout>
