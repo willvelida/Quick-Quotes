@@ -35,6 +35,19 @@
         android:textSize="16sp" />
 
     <Button
+        android:id="@+id/saveQuoteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/generateQuoteButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorAccent"
+        android:onClick="saveQuote"
+        android:text="Save Quote"
+        android:textColor="@color/tw__composer_white"
+        android:visibility="invisible" />
+
+    <Button
         android:id="@+id/generateQuoteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

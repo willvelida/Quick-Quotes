@@ -5,6 +5,10 @@ import android.os.AsyncTask;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,12 +38,13 @@ public class MainActivity extends AppCompatActivity {
     TextView quoteTextView;
     TextView authorTextView;
     Button getQuoteButton;
+    Button saveQuoteButton;
     Button tweetComposer;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         Twitter.initialize(this);
 
@@ -47,14 +52,39 @@ public class MainActivity extends AppCompatActivity {
         quoteTextView = (TextView) findViewById(R.id.quoteTextView);
         authorTextView = (TextView) findViewById(R.id.authorTextView);
         getQuoteButton = (Button) findViewById(R.id.generateQuoteButton);
+        saveQuoteButton = (Button) findViewById(R.id.saveQuoteButton);
         tweetComposer = (Button) findViewById(R.id.tweet_composer);
 
+        saveQuoteButton.setVisibility(View.INVISIBLE);
         tweetComposer.setEnabled(false);
+    }
+
+    // Create Menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // When an option is selected
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.favoritequotes:
+                // // TODO: 18/08/2017 Navigate to Favorite Quotes 
+                Log.i("Menu item selected", "Favorite Quotes");
+                return true;
+            default:
+                return false;
+        }
     }
 
     // Generate Quote from Button
     public void generateQuote(View view) {
         tweetComposer.setEnabled(true);
+        saveQuoteButton.setVisibility(View.VISIBLE);
         try {
             DownloadTask task = new DownloadTask();
             task.execute("https://api.forismatic.com/api/1.0/?method=getQuote&key=457653&format=json&lang=en");
@@ -65,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    // Save Quote
+    public void saveQuote(View view) {
+        // TODO: Save the quote to Favorites
+        Log.i("Button Pressed:", "Save!");
     }
 
     // Tweet the quote to twitter
